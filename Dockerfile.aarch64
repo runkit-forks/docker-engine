@@ -15,7 +15,7 @@
 # the case. Therefore, you don't have to disable it anymore.
 #
 
-FROM aarch64/ubuntu:wily
+FROM arm64v8/ubuntu:xenial
 
 # Packaged dependencies
 RUN apt-get update && apt-get install -y \
@@ -48,6 +48,7 @@ RUN apt-get update && apt-get install -y \
 	python-mock \
 	python-pip \
 	python-websocket \
+	python-setuptools \
 	gccgo \
 	iproute2 \
 	iputils-ping \
@@ -97,12 +98,10 @@ RUN set -x \
 # so we use gccgo as bootstrap to build Go from source code.
 # We don't use the official ARMv6 released binaries as a GOROOT_BOOTSTRAP, because
 # not all ARM64 platforms support 32-bit mode. 32-bit mode is optional for ARMv8.
-ENV GO_VERSION 1.7.6
-RUN mkdir /usr/src/go && curl -fsSL https://golang.org/dl/go${GO_VERSION}.src.tar.gz | tar -v -C /usr/src/go -xz --strip-components=1 \
-	&& cd /usr/src/go/src \
-	&& GOOS=linux GOARCH=arm64 GOROOT_BOOTSTRAP="$(go env GOROOT)" ./make.bash
+ENV GO_VERSION 1.8.7
+RUN curl -fsSL https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz | tar -v -C /usr/local -xz
 
-ENV PATH /usr/src/go/bin:$PATH
+ENV PATH /usr/local/go/bin:$PATH
 ENV GOPATH /go
 
 # Only install one version of the registry, because old version which support

@@ -20,6 +20,15 @@ of thousands of applications and databases.
 
 ![Docker logo](docs/static_files/docker-logo-compressed.png "Docker")
 
+
+## Building
+
+```
+make binary
+```
+
+Binaries will be created in `bundles/latest/`.
+
 ## Security Disclosure
 
 Security is very important to us. If you have any issue regarding security,
